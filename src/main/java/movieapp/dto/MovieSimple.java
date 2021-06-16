@@ -20,4 +20,5 @@ public class MovieSimple {
 	@Getter @Setter private Integer id;
 	@NonNull @Getter @Setter private String title;
 	@NonNull @Getter @Setter private Integer year;
+	@Getter @Setter private String posterUri;
 }

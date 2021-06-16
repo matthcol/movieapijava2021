@@ -11,6 +11,5 @@ import lombok.ToString;
 @ToString 
 public class MovieDetail extends MovieSimple {
 	@Getter @Setter private Integer duration;
-	private String synopsis;
-	private String posterUri;
+	@Getter @Setter private String synopsis;
 }

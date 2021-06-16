@@ -28,8 +28,8 @@ public class Movie {
 	private Integer year;
 	private Integer duration;
 	private String synopsis;
-	
-	
+	private String posterUri;
+		
 	public Movie() {
 		super();
 	}
@@ -83,6 +83,15 @@ public class Movie {
 
 	public void setSynopsis(String synopsis) {
 		this.synopsis = synopsis;
+	}
+
+	@Column(name="poster_uri")
+	public String getPosterUri() {
+		return posterUri;
+	}
+
+	public void setPosterUri(String posterUri) {
+		this.posterUri = posterUri;
 	}
 
 }
