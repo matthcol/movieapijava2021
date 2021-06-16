@@ -2,6 +2,7 @@ package movieapp.controller;
 
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -73,7 +74,11 @@ public class MovieController {
 			// @RequestParam(value="y", defaultValue = "2020") int year)
 			@RequestParam(value="y", required=false) Integer year)
 	{
-		return List.of();
+		if (Objects.isNull(year)) {
+			return movieService.getByTitle(title);
+		} else {
+			return movieService.getByTitleYear(title, year);
+		}
 	}
 	
 	/**
@@ -89,10 +94,18 @@ public class MovieController {
 			@RequestParam(value="mi", required=false) Integer minYear,
 			@RequestParam(value="ma", required=false) Integer maxYear)
 	{
-		return List.of();
+		if (Objects.nonNull(minYear)) {
+			if (Objects.nonNull(maxYear)) {
+				return movieService.getByYearRange(minYear, maxYear);
+			} else {
+				return movieService.getByYearGreater(minYear);
+			}
+		} else if (Objects.nonNull(maxYear)) {
+			return movieService.getByYearLess(maxYear);
+		} else {
+			return List.of();
+		}
 	}
-
-
 	
 	// POST request
 	
@@ -117,9 +130,11 @@ public class MovieController {
 	@PutMapping
 	public Optional<MovieDetail> updateMovie(@RequestBody MovieDetail movie) {
 		// TODO: complete here
-		return Optional.empty();
+		return movieService.update(movie);
 	}
 
+	// DELETE request 
+	
 	/**
 	 * url /api/movies/1
 	 * @param id id of movie to delete
@@ -127,7 +142,11 @@ public class MovieController {
 	 */
 	@DeleteMapping("/{id}")
 	public Optional<MovieDetail> deleteMovieById(@PathVariable("id") int id) {
-		// TODO: complete here
-		return Optional.empty();
+		// Error to show TDD method
+		return Optional.of(MovieDetail.builder()
+				.id(2000000000)
+				.title("Fake")
+				.year(1890)
+				.build());
 	}
 }
