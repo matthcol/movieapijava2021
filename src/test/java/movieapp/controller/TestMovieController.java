@@ -95,8 +95,8 @@ class TestMovieController {
 		int nbMovies = 2;
 		var title = "The Man Who Knew Too Much";
 		var moviesFromService = List.of(
-				new MovieSimple(1, title, 1934),
-				new MovieSimple(2, title, 1956));
+				new MovieSimple(1, title, 1934, null),
+				new MovieSimple(2, title, 1956, null));
 		given(movieService.getByTitle(eq(title)))
 			.willReturn(moviesFromService);
 		// 2. when/then
@@ -127,7 +127,7 @@ class TestMovieController {
 		var title = "The Man Who Knew Too Much";
 		Integer year = 1956;
 		var moviesFromService = List.of(
-				new MovieSimple(2, title, year));
+				new MovieSimple(2, title, year, null));
 		given(movieService.getByTitleYear(eq(title), eq(year)))
 			.willReturn(moviesFromService);
 		// 2. when/then
@@ -170,9 +170,9 @@ class TestMovieController {
 		Integer year3 = 2021;
 		
 		var moviesFromService = List.of(
-				new MovieSimple(1, title1, year1),
-				new MovieSimple(2, title2, year2),
-				new MovieSimple(3, title3, year3));
+				new MovieSimple(1, title1, year1, null),
+				new MovieSimple(2, title2, year2, null),
+				new MovieSimple(3, title3, year3, null));
 		given(movieService.getByYearRange(eq(year1), eq(year3)))
 			.willReturn(moviesFromService);
 		// 2. when/then
