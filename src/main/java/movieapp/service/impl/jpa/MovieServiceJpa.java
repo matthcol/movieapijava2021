@@ -54,19 +54,10 @@ public class MovieServiceJpa implements IMovieService {
 	
 	@Override
 	public List<MovieSimple> getAll() {
-		// find entities
-		List<Movie> moviesEntity = movieRepository.findAll();
-		// convert entities to DTOs
-		List<MovieSimple> moviesDto = moviesEntity.stream()
-			.map(me -> modelMapper.map(me, MovieSimple.class))
-			.collect(Collectors.toList());
-		// return DTOs
-		return moviesDto;
-		// same thing without intermediate variables
-//		return movieRepository.findAll()
-//				.stream()
-//				.map(me -> modelMapper.map(me, MovieSimple.class))
-//				.collect(Collectors.toList());
+		return movieRepository.findAll()
+				.stream()
+				.map(me -> modelMapper.map(me, MovieSimple.class))
+				.collect(Collectors.toList());
 	}
 
 	@Override
@@ -75,7 +66,6 @@ public class MovieServiceJpa implements IMovieService {
 				.map(me -> modelMapper.map(me, MovieDetail.class));
 	}
 
-
 	@Override
 	public List<MovieSimple> getByTitle(String title) {
 		return movieRepository.findByTitle(title)
@@ -83,11 +73,48 @@ public class MovieServiceJpa implements IMovieService {
 				.collect(Collectors.toList());
 	}
 
+	@Override
+	public List<MovieSimple> getByTitleYear(String title, int year) {
+		// TODO Auto-generated method stub
+		return List.of();
+	}
 
+	@Override
+	public List<MovieSimple> getByYearRange(int minYear, int maxYear) {
+		// TODO Auto-generated method stub
+		return List.of();
+	}
+
+	@Override
+	public List<MovieSimple> getByYearLess(int maxYear) {
+		// TODO Auto-generated method stub
+		return List.of();
+	}
+
+	@Override
+	public List<MovieSimple> getByYearGreater(int minYear) {
+		// TODO Auto-generated method stub
+		return List.of();
+	}
+	
 	@Override
 	public MovieStatistics getStatistics() {
 		return movieRepository.statisticsDto();
 	}
 
+	// UPDATE METHODS
+	
+	@Override
+	public Optional<MovieDetail> update(MovieDetail movie) {
+		return Optional.empty();
+	}
+
+	// DELETE METHODS
+	
+	@Override
+	public Optional<MovieDetail> deleteMovieById(int id) {
+		// TODO Auto-generated method stub
+		return Optional.empty();
+	}
 
 }

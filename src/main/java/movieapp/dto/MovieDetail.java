@@ -1,16 +1,22 @@
 package movieapp.dto;
 
-import lombok.AllArgsConstructor;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @NoArgsConstructor
-@AllArgsConstructor(staticName = "of")
 @ToString 
 public class MovieDetail extends MovieSimple {
 	@Getter @Setter private Integer duration;
-	private String synopsis;
-	private String posterUri;
+	@Getter @Setter private String synopsis;
+	
+	@Builder
+	public MovieDetail(Integer id, String  title, Integer year, Integer duration, String synopsis){
+	    super(id, title, year);
+	    this.duration = duration;
+	    this.synopsis = synopsis;
+	  } 
 }

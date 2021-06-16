@@ -14,5 +14,13 @@ public interface IMovieService {
 	Optional<MovieDetail> getById(int id);
 	List<MovieSimple> getAll();
 	List<MovieSimple> getByTitle(String title);
+	List<MovieSimple> getByTitleYear(String title, int year);
+	List<MovieSimple> getByYearRange(int minYear, int maxYear);
+	List<MovieSimple> getByYearLess(int maxYear);
+	List<MovieSimple> getByYearGreater(int minYear);
 	MovieStatistics getStatistics();
+	// UPDATE
+	Optional<MovieDetail> update(MovieDetail movie);
+	// DELETE
+	Optional<MovieDetail> deleteMovieById(int id);
 }
