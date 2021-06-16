@@ -14,9 +14,10 @@ public class MovieDetail extends MovieSimple {
 	@Getter @Setter private String synopsis;
 	
 	@Builder
-	public MovieDetail(Integer id, String  title, Integer year, Integer duration, String synopsis){
-	    super(id, title, year);
+	public MovieDetail(Integer id, String  title, Integer year, String posterUri, Integer duration, String synopsis){
+	    super(id, title, year, posterUri);
 	    this.duration = duration;
 	    this.synopsis = synopsis;
 	  } 
+
 }
