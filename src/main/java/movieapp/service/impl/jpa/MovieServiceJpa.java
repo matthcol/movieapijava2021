@@ -75,26 +75,30 @@ public class MovieServiceJpa implements IMovieService {
 
 	@Override
 	public List<MovieSimple> getByTitleYear(String title, int year) {
-		// TODO Auto-generated method stub
-		return List.of();
+		return movieRepository.findByTitleAndYearOrderByYear(title, year)
+				.map(me->modelMapper.map(me, MovieSimple.class))
+				.collect(Collectors.toList());
 	}
 
 	@Override
 	public List<MovieSimple> getByYearRange(int minYear, int maxYear) {
-		// TODO Auto-generated method stub
-		return List.of();
+		return movieRepository.findByYearBetweenOrderByYear(minYear, maxYear)
+				.map(me->modelMapper.map(me, MovieSimple.class))
+				.collect(Collectors.toList());	
 	}
 
 	@Override
 	public List<MovieSimple> getByYearLess(int maxYear) {
-		// TODO Auto-generated method stub
-		return List.of();
+		return movieRepository.findByYearLessThanEqual(maxYear)
+				.map(me -> modelMapper.map(me, MovieSimple.class))
+				.collect(Collectors.toList());
 	}
 
 	@Override
 	public List<MovieSimple> getByYearGreater(int minYear) {
-		// TODO Auto-generated method stub
-		return List.of();
+		return movieRepository.findByYearGreaterThanEqual(minYear)
+				.map(me -> modelMapper.map(me, MovieSimple.class))
+				.collect(Collectors.toList());
 	}
 	
 	@Override
@@ -106,15 +110,24 @@ public class MovieServiceJpa implements IMovieService {
 	
 	@Override
 	public Optional<MovieDetail> update(MovieDetail movie) {
-		return Optional.empty();
+		return movieRepository.findById(movie.getId())
+				.map(me-> {
+					// update entity with DTO
+					modelMapper.map(movie, me);
+					// convert back entity to DTO
+					return modelMapper.map(me, MovieDetail.class);
+				});
 	}
 
 	// DELETE METHODS
 	
 	@Override
 	public Optional<MovieDetail> deleteMovieById(int id) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+		return movieRepository.findById(id)
+				.map(me->{
+					movieRepository.delete(me);
+					return modelMapper.map(me, MovieDetail.class);
+				});
 	}
 
 }

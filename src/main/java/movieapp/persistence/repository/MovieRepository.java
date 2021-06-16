@@ -4,6 +4,7 @@ import java.util.stream.Stream;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.domain.Sort;
 
 import movieapp.dto.MovieStatistics;
 import movieapp.persistence.entity.Movie;
@@ -22,6 +23,22 @@ public interface MovieRepository extends JpaRepository<Movie, Integer>{
 	// from movie movie0_ 
 	// where movie0_.title=?
 	Stream<Movie> findByTitle(String title);
+		
+	// where year = 2000
+	Stream<Movie> findByYearOrderByTitle(int year);
+	
+	// where year >= 2000
+	Stream<Movie> findByYearGreaterThanEqual(int yearMin);
+	
+	// where year <= 2000
+	Stream<Movie> findByYearLessThanEqual(int yearMax);
+	
+	// where year between 2000 and 2009 + sort
+	Stream<Movie> findByYearBetweenOrderByYear(int yearMin, int yearMax);
+	Stream<Movie> findByYearBetween(int yearMin, int yearMax, Sort sort);
+	
+	// where title = 'The Lion King' and year = 1994 + sort
+	Stream<Movie> findByTitleAndYearOrderByYear(String title, int year);
 		
 	// global statistics with DTO object
 	@Query("select new movieapp.dto.MovieStatistics("
