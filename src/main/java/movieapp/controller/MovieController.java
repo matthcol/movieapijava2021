@@ -129,7 +129,6 @@ public class MovieController {
 	 */
 	@PutMapping
 	public Optional<MovieDetail> updateMovie(@RequestBody MovieDetail movie) {
-		// TODO: complete here
 		return movieService.update(movie);
 	}
 
@@ -142,11 +141,6 @@ public class MovieController {
 	 */
 	@DeleteMapping("/{id}")
 	public Optional<MovieDetail> deleteMovieById(@PathVariable("id") int id) {
-		// Error to show TDD method
-		return Optional.of(MovieDetail.builder()
-				.id(2000000000)
-				.title("Fake")
-				.year(1890)
-				.build());
+		return movieService.deleteMovieById(id);
 	}
 }
