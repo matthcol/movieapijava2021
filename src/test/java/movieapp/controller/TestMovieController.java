@@ -317,6 +317,6 @@ class TestMovieController {
 		// check mock service has been called
 		then(movieService)
 			.should()
-			.update(any());
+			.deleteMovieById(eq(id));
 	}
 }
