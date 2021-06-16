@@ -121,6 +121,85 @@ class TestMovieController {
 	}
 	
 	@Test
+	void testGetByTitleYear() throws Exception {
+		// 1. given
+		int nbMovies = 1;
+		var title = "The Man Who Knew Too Much";
+		Integer year = 1956;
+		var moviesFromService = List.of(
+				new MovieSimple(2, title, year));
+		given(movieService.getByTitleYear(eq(title), eq(year)))
+			.willReturn(moviesFromService);
+		// 2. when/then
+		mockMvc
+			.perform(get(BASE_URI + "/byTitleYear")	// build GET HTTP request
+					.queryParam("t", title)
+					.queryParam("y", ""+year)
+					.accept(MediaType.APPLICATION_JSON)) // + header request
+			.andDo(print())	// intercept request to print 
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(jsonPath("$").isArray())
+			.andExpect(jsonPath("$", Matchers.hasSize(nbMovies)))
+			.andExpect(
+					jsonPath("$[*].title", 
+							Matchers.everyItem(
+									Matchers.is(title)
+									)
+					))
+			.andExpect(
+				jsonPath("$[*].year", 
+						Matchers.everyItem(
+								Matchers.is(year)
+								)
+				));
+		then(movieService)
+			.should()
+			.getByTitleYear(eq(title), eq(year));
+	}
+
+	@Test
+	void testGetByYearRange() throws Exception {
+		// 1. given
+		int nbMovies = 3;
+		var title1 = "Spider-Man: Far From Home";
+		Integer year1 = 2019;
+		var title2 = "Wonder Woman 1984";
+		Integer year2 = 2020;
+		var title3 = "Nobody";
+		Integer year3 = 2021;
+		
+		var moviesFromService = List.of(
+				new MovieSimple(1, title1, year1),
+				new MovieSimple(2, title2, year2),
+				new MovieSimple(3, title3, year3));
+		given(movieService.getByYearRange(eq(year1), eq(year3)))
+			.willReturn(moviesFromService);
+		// 2. when/then
+		mockMvc
+			.perform(get(BASE_URI + "/byYearRange")	// build GET HTTP request
+					.queryParam("mi", ""+year1)
+					.queryParam("ma", ""+year3)
+					.accept(MediaType.APPLICATION_JSON)) // + header request
+			.andDo(print())	// intercept request to print 
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(jsonPath("$").isArray())
+			.andExpect(jsonPath("$", Matchers.hasSize(nbMovies)))
+			.andExpect(
+					jsonPath("$[*].year", 
+							Matchers.everyItem(
+									Matchers.allOf(
+											Matchers.greaterThanOrEqualTo(year1),
+											Matchers.lessThanOrEqualTo(year3))
+									)
+					));
+		then(movieService)
+			.should()
+			.getByYearRange(eq(year1),  eq(year3));
+	}
+	
+	@Test
 	void testAdd() throws Exception {
 		// 1. given
 		// properties for json in
