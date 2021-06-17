@@ -27,6 +27,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import movieapp.dto.MovieSimple;
 import movieapp.dto.MovieDetail;
+import movieapp.dto.MovieDetailDirectorActors;
 import movieapp.service.IMovieService;
 
 @WebMvcTest(MovieController.class) // controller to test with MockMvc client
@@ -65,11 +66,8 @@ class TestMovieController {
 		int id = 1;
 		String title = "Nobody";
 		Integer year = 2021;
-		var movieDetailDto = MovieDetail.builder()
-				.id(id)
-				.title(title)
-				.year(year)
-				.build();
+		var movieDetailDto = new MovieDetailDirectorActors(
+				id, title, year,null,null,null,null,null);
 		given(movieService.getById(id))
 			.willReturn(Optional.of(movieDetailDto));
 		// 2. when/then

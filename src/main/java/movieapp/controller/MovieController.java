@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import movieapp.dto.MovieDetail;
+import movieapp.dto.MovieDetailDirectorActors;
 import movieapp.dto.MovieSimple;
 import movieapp.service.IMovieService;
 
@@ -48,7 +49,7 @@ public class MovieController {
 	 */
 	@GetMapping("/{id}")
 	@ResponseBody
-	public Optional<MovieDetail> movie(@PathVariable("id") int id) {
+	public Optional<MovieDetailDirectorActors> movie(@PathVariable("id") int id) {
 		return movieService.getById(id);
 	}
 	
@@ -131,6 +132,37 @@ public class MovieController {
 	public Optional<MovieDetail> updateMovie(@RequestBody MovieDetail movie) {
 		return movieService.update(movie);
 	}
+	
+	/**
+	 * path /api/movies/director?mid=1&did=3
+	 * @param idMovie
+	 * @param idDirector
+	 * @return
+	 */
+	@PutMapping("/director")
+	public Optional<MovieDetailDirectorActors> setDirector(
+			@RequestParam("mid") int idMovie, 
+			@RequestParam("did") int idDirector) 
+	{
+		return movieService.setDirector(idMovie, idDirector);	
+	}
+
+	/**
+	 * path /api/movies/actors?mid=1
+	 * body json : [33, 4, 42]
+	 * @param idMovie
+	 * @param idDirector
+	 * @return
+	 */
+	@PutMapping("/actors")
+	public Optional<MovieDetailDirectorActors> setActors(
+			@RequestParam("mid") int idMovie, 
+			@RequestBody List<Integer> idActors) 
+	{
+		return movieService.setActors(idMovie, idActors);	
+	}
+
+
 
 	// DELETE request 
 	
