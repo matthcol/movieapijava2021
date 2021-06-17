@@ -27,24 +27,41 @@ public class ArtistController {
 	@Autowired
 	IArtistService artistService;
 	
+	/**
+	 * /api/artists
+	 * @return
+	 */
 	@GetMapping()
 	@ResponseBody
 	List<ArtistSimple> getAll(){
 		return artistService.getAll();
 	}
 	
+	/**
+	 * /api/artists/1
+	 */
 	@GetMapping("/{id}")
 	@ResponseBody
 	Optional<ArtistSimple> getById(@PathVariable("id") int id){
 		return artistService.getById(id);
 	}
 	
+	/**
+	 * GET /api/artists?n=Eastwood 
+	 * @param name
+	 * @return
+	 */
 	@GetMapping("/byName")
 	@ResponseBody
 	List<ArtistSimple> getById(@RequestParam("n") String name){
 		return artistService.getByName(name);
 	}
 	
+	/**
+	 * POST /api/artists
+	 * @param artistSimple
+	 * @return
+	 */
 	@PostMapping
 	@ResponseBody
 	ArtistSimple add(@RequestBody ArtistSimple artistSimple) {
