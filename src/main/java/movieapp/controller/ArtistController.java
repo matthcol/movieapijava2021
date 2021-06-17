@@ -17,9 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import movieapp.dto.ArtistSimple;
 import movieapp.service.IArtistService;
 
-
-
-
 @RestController
 @RequestMapping("/api/artists")
 public class ArtistController {
@@ -68,5 +65,4 @@ public class ArtistController {
 		return artistService.add(artistSimple);
 	}
 	
-
 }
