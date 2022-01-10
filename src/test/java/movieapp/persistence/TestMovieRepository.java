@@ -28,8 +28,8 @@ import movieapp.persistence.repository.MovieRepository;
 import testing.persistence.DatabaseUtils;
 
 @DataJpaTest // active Spring Data avec sa couche JPA Hibernate
-//@AutoConfigureTestDatabase(replace = Replace.NONE) // deactivate H2 +
-//@ActiveProfiles("test") // + DB from application-test.properties
+@AutoConfigureTestDatabase(replace = Replace.NONE) // deactivate H2 +
+@ActiveProfiles("test") // + DB from application-test.properties
 class TestMovieRepository {
 
 	@Autowired
