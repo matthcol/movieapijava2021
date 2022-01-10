@@ -12,12 +12,17 @@ import javax.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import movieapp.persistence.entity.Artist;
 import movieapp.persistence.repository.ArtistRepository;
 
 @DataJpaTest
+@AutoConfigureTestDatabase(replace = Replace.NONE) // deactivate H2 +
+@ActiveProfiles("test") // + DB from application-test.properties
 public class TestArtistRepositoryFind {
 
 	@Autowired
