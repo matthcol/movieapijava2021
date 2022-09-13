@@ -9,13 +9,18 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import org.junit.jupiter.api.Test;
 import org.hamcrest.Matchers;
 
@@ -323,5 +328,127 @@ class TestMovieController {
 		then(movieService)
 			.should()
 			.deleteMovieById(eq(id));
+	}
+
+	@Test
+	void testSetDirector() throws Exception {
+		// 1. given
+		// properties for json / dto
+		String title = "Nobody";
+		Integer year = 2021;
+		Integer duration = null;
+		String synopsis = null;
+		String name = "Ilya Naishuller";
+		LocalDate birthdate = LocalDate.of(1983,11,19);
+
+		// perfect response from mock service
+		int idMovie = 1;
+		int idDirector = 2;
+		var directorFromService = ArtistSimple.builder()
+				.id(idDirector)
+				.name(name)
+				.birthdate(birthdate)
+				.build();
+		var movieFromService = MovieDetailDirectorActors.builderDA()
+				.id(idMovie)
+				.title(title)
+				.year(year)
+				.director(directorFromService)
+				.build();
+		var optMovieFromService = Optional.of(movieFromService);
+		given(movieService.setDirector(eq(idMovie), eq(idDirector)))
+				.willReturn(optMovieFromService);
+		// 2. when/then
+		mockMvc
+				.perform(patch(BASE_URI + "/director")	// build PATCH HTTP request
+						.queryParam("mid", ""+idMovie)
+						.queryParam("did", ""+idDirector)
+						.accept(MediaType.APPLICATION_JSON)) // + header request
+				.andDo(print())	// intercept request to print
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$.id").exists())
+				.andExpect(jsonPath("$.id").value(idMovie))
+				.andExpect(jsonPath("$.title").value(title))
+				.andExpect(jsonPath("$.year").value(year))
+				.andExpect(jsonPath("$.director.id").exists())
+				.andExpect(jsonPath("$.director.id").value(idDirector))
+				.andExpect(jsonPath("$.director.name").value(name))
+				.andExpect(jsonPath("$.director.birthdate").value(birthdate.toString()));
+		// check mock service has been called
+		then(movieService)
+				.should()
+				.setDirector(eq(idMovie), eq(idDirector));
+	}
+
+	@Test
+	void testSetActors() throws Exception {
+		// 1. given
+		// properties for json / dto
+		// 1.1. movie
+		int idMovie = 1;
+		String title = "Nobody";
+		Integer year = 2021;
+		Integer duration = null;
+		String synopsis = null;
+		// 1.2. actors
+		List<Integer> idActors = List.of(5, 7, 13);
+		List<String> nameActors = List.of("Bod Odenkirk", "Christopher Lloyd", "Connie Nielsen");
+		List<LocalDate> birthdateActors = List.of(
+			 	LocalDate.of(1962,10,22),
+			 	LocalDate.of(1938,10,22),
+				LocalDate.of(1965,7,3));
+
+		// JSON body to send
+		String idActorsJsonIn = JsonProvider.idsson(idActors);
+
+		// perfect response from mock service
+		var actorsFromService = IntStream.range(0,3)
+				.mapToObj(index -> ArtistSimple.builder()
+					.id(idActors.get(index))
+					.name(nameActors.get(index))
+					.birthdate(birthdateActors.get(index))
+					.build())
+				.collect(Collectors.toList());
+		var movieFromService = MovieDetailDirectorActors.builderDA()
+				.id(idMovie)
+				.title(title)
+				.year(year)
+				.actors(actorsFromService)
+				.build();
+		var optMovieFromService = Optional.of(movieFromService);
+		given(movieService.setActors(eq(idMovie), eq(idActors)))
+				.willReturn(optMovieFromService);
+		// 2. when/then
+		mockMvc
+				.perform(patch(BASE_URI + "/actors")	// build PATCH HTTP request
+						.queryParam("mid", ""+idMovie)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(idActorsJsonIn)
+						.accept(MediaType.APPLICATION_JSON)) // + header request
+				.andDo(print())	// intercept request to print
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$.id").exists())
+				.andExpect(jsonPath("$.id").value(idMovie))
+				.andExpect(jsonPath("$.title").value(title))
+				.andExpect(jsonPath("$.year").value(year))
+
+				.andExpect(jsonPath("$.actors").isArray())
+				.andExpect(jsonPath("$.actors", Matchers.hasSize(actorsFromService.size())))
+				.andExpect(jsonPath("$.actors[*].id",
+						Matchers.contains(idActors.toArray())))
+				.andExpect(jsonPath("$.actors[*].name",
+						Matchers.contains(nameActors.toArray())))
+				.andExpect(jsonPath("$.actors[*].birthdate",
+						Matchers.contains(birthdateActors.stream()
+							.map(Object::toString)
+							.collect(Collectors.toList())
+							.toArray())));
+
+		// check mock service has been called
+		then(movieService)
+				.should()
+				.setActors(eq(idMovie), eq(idActors));
 	}
 }

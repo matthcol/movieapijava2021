@@ -1,6 +1,8 @@
 package movieapp.controller;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class JsonProvider {
 	
@@ -21,6 +23,13 @@ public class JsonProvider {
 				+ ", \"duration\": " + duration
 				+ ", \"synopsis\": \"" + synopsis
 				+ "\"}";
+	}
+
+	public static String idsson(List<Integer> ids) {
+		return "["
+				+ ids.stream().map(id -> ""+id)
+						.collect(Collectors.joining(","))
+				+ "]";
 	}
 
 }

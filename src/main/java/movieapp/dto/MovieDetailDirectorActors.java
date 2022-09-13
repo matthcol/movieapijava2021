@@ -2,19 +2,16 @@ package movieapp.dto;
 
 import java.util.List;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "of")
 public class MovieDetailDirectorActors extends MovieDetail {
 	@Getter @Setter private ArtistSimple director;
+	@Singular
 	@Getter @Setter private List<ArtistSimple> actors;
 	
-	//@Builder
+	@Builder(builderMethodName="builderDA")
 	public MovieDetailDirectorActors(Integer id, String  title, 
 			Integer year, String posterUri, Integer duration, String synopsis,
 			ArtistSimple director, List<ArtistSimple> actors)
