@@ -64,5 +64,12 @@ public class ArtistController {
 	ArtistSimple add(@RequestBody ArtistSimple artistSimple) {
 		return artistService.add(artistSimple);
 	}
+
+	@GetMapping("/{id}")
+	IArtistStatistic stats(@PathVariable("id") int id){
+		// TODO: implements here
+		return null;
+	}
+
 	
 }
