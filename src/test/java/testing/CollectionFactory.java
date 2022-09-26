@@ -40,4 +40,12 @@ public class CollectionFactory {
 //				.thenComparing(keyExtractor1);
 		return null; //of(coll, comparator);
 	}
+
+	public static <E> boolean assertTop(
+			Collection<? extends E> c1,
+			Collection<? extends E> c2)
+	{
+		// TODO: do something smart here
+		return true;
+	}
 }
