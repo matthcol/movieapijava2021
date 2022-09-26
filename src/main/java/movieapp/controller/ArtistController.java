@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import movieapp.dto.ArtistSimple;
+import movieapp.dto.IArtistStatistics;
 import movieapp.service.IArtistService;
 
 @RestController
@@ -66,9 +67,8 @@ public class ArtistController {
 	}
 
 	@GetMapping("/{id}")
-	IArtistStatistic stats(@PathVariable("id") int id){
-		// TODO: implements here
-		return null;
+	IArtistStatistics stats(@PathVariable("id") int id){
+		return artistService.stats(id);
 	}
 
 	
