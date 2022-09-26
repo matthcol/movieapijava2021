@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import movieapp.dto.IArtistStatistics;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,6 +70,11 @@ public class ArtistServiceJpa implements IArtistService{
 					artistRepository.deleteById(id);
 					return modelMapper.map(ae, ArtistSimple.class);
 				});
+	}
+
+	@Override
+	public IArtistStatistics statsArtists(int id) {
+		return artistRepository.statisticsByDirector();
 	}
 
 

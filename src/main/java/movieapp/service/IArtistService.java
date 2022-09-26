@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import movieapp.dto.ArtistSimple;
+import movieapp.dto.IArtistStatistics;
+import org.springframework.web.bind.annotation.PathVariable;
 
 public interface IArtistService {
 	// READ
@@ -16,4 +18,5 @@ public interface IArtistService {
 	Optional<ArtistSimple> update(ArtistSimple artist);
 	// DELETE
 	Optional<ArtistSimple> delete(int id);
+	IArtistStatistics statsArtists( int id);
 }
