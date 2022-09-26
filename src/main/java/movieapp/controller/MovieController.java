@@ -170,7 +170,7 @@ public class MovieController {
 
 	@GetMapping("/stats/{id}")
 	public Map<String,Long> stats(@PathVariable("id") int id) {
-		return Map.of("Count", 123L, "Duration", 1200L);
+		return Map.of("Count", 125L, "Duration", 125L);
 
 	}
 }
