@@ -66,7 +66,7 @@ public class ArtistController {
 		return artistService.add(artistSimple);
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("/stats/{id}")
 	IArtistStatistics stats(@PathVariable("id") int id){
 		return artistService.stats(id);
 	}
