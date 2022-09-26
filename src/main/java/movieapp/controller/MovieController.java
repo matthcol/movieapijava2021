@@ -2,6 +2,7 @@ package movieapp.controller;
 
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -165,5 +166,11 @@ public class MovieController {
 	@DeleteMapping("/{id}")
 	public Optional<MovieDetail> deleteMovieById(@PathVariable("id") int id) {
 		return movieService.deleteMovieById(id);
+	}
+
+	@GetMapping("/stats/{id}")
+	public Map<String,Long> stats(@PathVariable("id") int id) {
+		return Map.of("Count", 123L, "Duration", 1200L);
+
 	}
 }
